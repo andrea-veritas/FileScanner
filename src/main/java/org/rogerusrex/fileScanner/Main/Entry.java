@@ -1,10 +1,13 @@
 package org.rogerusrex.fileScanner.Main;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import java.io.File;
+import java.util.Stack;
 
 
 /**
@@ -16,8 +19,21 @@ public class Entry {
         Arguements args = new Arguements(argv);
 
         File root = new File(args.getTargetDirectory());
+        Stack<File> stack = new Stack<File>();
         if (root.exists() && root.isDirectory()) {
-
+            stack.push(root);
+            File node=null;
+            while((node=stack.pop())!=null){
+                if(node.isDirectory()){
+                    for(File f:node.listFiles()){
+                        stack.push(f);
+                    }
+                }else{
+                    String fileName=node.getAbsolutePath();
+                    Long size=FileUtils.sizeOf(node);
+                    FileUtils.checksum(node,);
+                }
+            }
         }
 
     }
